@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NovaAI - The Next-Gen Artificial Intelligence Platform</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f5ff',
+                            100: '#e0eaff',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #030712;
+            color: #f3f4f6;
+            overflow-x: hidden;
+        }
+        .glass-card {
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-nav {
+            background: rgba(3, 7, 18, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #60a5fa 0%, #a855f7 50%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%);
+        }
+        .glow-effect {
+            box-shadow: 0 0 50px -10px rgba(59, 130, 246, 0.3);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #030712;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f2937;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #374151;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-blue-500 selection:text-white">
+
+    <!-- Background Glow Orbs -->
+    <div class="fixed top-0 left-1/4 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl pointer-events-none -z-10 animate-pulse-slow"></div>
+    <div class="fixed top-1/3 right-10 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl pointer-events-none -z-10 animate-pulse-slow" style="animation-delay: 2s;"></div>
+    <div class="fixed bottom-10 left-10 w-96 h-96 bg-pink-600/15 rounded-full blur-3xl pointer-events-none -z-10 animate-pulse-slow" style="animation-delay: 4s;"></div>
+
+    <!-- Navigation Bar -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl gradient-bg flex items-center justify-center shadow-lg shadow-blue-500/25 group-hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-brain text-white text-lg"></i>
+                </div>
+                <span class="text-2xl font-extrabold tracking-tight text-white">Nova<span class="gradient-text">AI</span></span>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-300">
+                <a href="#features" class="hover:text-white transition-colors">Features</a>
+                <a href="#playground" class="hover:text-white transition-colors">Playground</a>
+                <a href="#solutions" class="hover:text-white transition-colors">Solutions</a>
+                <a href="#pricing" class="hover:text-white transition-colors">Pricing</a>
+                <a href="#testimonials" class="hover:text-white transition-colors">Testimonials</a>
+            </nav>
+
+            <!-- CTA Buttons -->
+            <div class="hidden md:flex items-center gap-4">
+                <button onclick="openModal('signin')" class="text-sm font-semibold text-gray-300 hover:text-white px-4 py-2 transition-colors">Sign In</button>
+                <button onclick="openModal('signup')" class="gradient-bg text-white text-sm font-semibold px-5 py-2.5 rounded-xl shadow-lg shadow-blue-500/20 hover:opacity-95 transition-all hover:scale-[1.02] active:scale-[0.98]">
+                    Get Started Free
+                </button>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-gray-300 hover:text-white text-xl p-2 focus:outline-none">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden glass-card border-t border-white/10 px-6 py-6 space-y-4">
+            <a href="#features" class="block text-base font-medium text-gray-300 hover:text-white">Features</a>
+            <a href="#playground" class="block text-base font-medium text-gray-300 hover:text-white">Playground</a>
+            <a href="#solutions" class="block text-base font-medium text-gray-300 hover:text-white">Solutions</a>
+            <a href="#pricing" class="block text-base font-medium text-gray-300 hover:text-white">Pricing</a>
+            <a href="#testimonials" class="block text-base font-medium text-gray-300 hover:text-white">Testimonials</a>
+            <div class="pt-4 border-t border-white/10 flex flex-col gap-3">
+                <button onclick="openModal('signin')" class="w-full py-2.5 text-center text-sm font-semibold text-gray-300 hover:text-white border border-white/10 rounded-xl">Sign In</button>
+                <button onclick="openModal('signup')" class="w-full py-2.5 text-center gradient-bg text-white text-sm font-semibold rounded-xl shadow-lg shadow-blue-500/25">Get Started Free</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 md:pt-44 md:pb-32 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <!-- Badge -->
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card text-sm font-medium text-blue-400 mb-8 border border-blue-500/30 animate-float">
+                <span class="flex h-2 w-2 rounded-full bg-blue-400 animate-ping"></span>
+                Introducing Nova v4.0 Ultra &mdash; State-of-the-art Neural Engine
+            </div>
+
+            <!-- Headline -->
+            <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white max-w-5xl mx-auto leading-[1.1] mb-8">
+                Supercharge Your Workflow with <span class="gradient-text">Infinite Intelligence</span>
+            </h1>
+
+            <!-- Subtitle -->
+            <p class="text-lg sm:text-xl text-gray-400 max-w-3xl mx-auto mb-10 leading-relaxed">
+                Experience the next frontier of generative AI. Code faster, write brilliantly, analyze complex data, and build autonomous agents seamlessly in one unified platform.
+            </p>
+
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+                <a href="#playground" class="w-full sm:w-auto gradient-bg text-white font-semibold px-8 py-4 rounded-xl shadow-xl shadow-blue-600/30 hover:opacity-95 transition-all hover:scale-105 flex items-center justify-center gap-3 text-base">
+                    <span>Explore Playground</span>
+                    <i class="fa-solid fa-arrow-right text-sm"></i>
+                </a>
+                <a href="#features" class="w-full sm:w-auto glass-card text-white font-semibold px-8 py-4 rounded-xl hover:bg-white/10 transition-all border border-white/10 flex items-center justify-center gap-3 text-base">
+                    <i class="fa-regular fa-circle-play text-blue-400"></i>
+                    <span>Watch Demo</span>
+                </a>
+            </div>
+
+            <!-- Hero Dashboard Preview / Graphic -->
+            <div class="relative max-w-5xl mx-auto rounded-2xl glass-card p-3 md:p-4 glow-effect border border-white/10">
+                <div class="absolute -top-3 left-6 px-3 py-1 bg-blue-600/80 backdrop-blur text-xs font-semibold text-white rounded-md uppercase tracking-wider">Live Neural Output</div>
+                <div class="bg-gray-950 rounded-xl p-4 md:p-6 text-left font-mono text-sm overflow-hidden border border-white/5">
+                    <div class="flex items-center justify-between pb-4 mb-4 border-b border-white/10">
+                        <div class="flex items-center gap-2">
+                            <span class="w-3 h-3 rounded-full bg-red-500 inline-block"></span>
+                            <span class="w-3 h-3 rounded-full bg-yellow-500 inline-block"></span>
+                            <span class="w-3 h-3 rounded-full bg-green-500 inline-block"></span>
+                            <span class="text-xs text-gray-500 ml-2">nova-session-4982.ai</span>
+                        </div>
+                        <div class="flex items-center gap-3 text-xs text-blue-400">
+                            <i class="fa-solid fa-bolt"></i> Latency: 42ms
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex items-start gap-3">
+                            <div class="w-7 h-7 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs shrink-0 font-sans font-bold">U</div>
+                            <div class="text-gray-300 font-sans pt-1">Generate a high-performance React component for a real-time crypto ticker with Tailwind CSS.</div>
+                        </div>
+                        <div class="flex items-start gap-3 pt-3">
+                            <div class="w-7 h-7 rounded-lg gradient-bg text-white flex items-center justify-center text-xs shrink-0 font-sans font-bold">AI</div>
+                            <div class="text-gray-300 w-full overflow-x-auto">
+                                <pre class="text-xs text-blue-300 bg-black/40 p-3 rounded-lg border border-white/5"><code>&lt;div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 shadow-2xl"&gt;
+  &lt;div className="flex justify-between items-center mb-4"&gt;
+    &lt;span className="text-gray-400 font-medium"&gt;BTC / USD&lt;/span&gt;
+    &lt;span className="text-emerald-400 font-bold bg-emerald-500/10 px-2 py-1 rounded"&gt;+4.82%&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div className="text-3xl font-extrabold text-white"&gt;$94,320.50&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trusted Logos / Stats -->
+            <div class="mt-20 pt-10 border-t border-white/10 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div>
+                    <div class="text-3xl md:text-4xl font-extrabold text-white mb-1">99.9%</div>
+                    <div class="text-sm text-gray-400">Uptime SLA Guarantee</div>
+                </div>
+                <div>
+                    <div class="text-3xl md:text-4xl font-extrabold text-white mb-1">10B+</div>
+                    <div class="text-sm text-gray-400">Tokens Processed Daily</div>
+                </div>
+                <div>
+                    <div class="text-3xl md:text-4xl font-extrabold text-white mb-1">150K+</div>
+                    <div class="text-sm text-gray-400">Active Developers & Teams</div>
+                </div>
+                <div>
+                    <div class="text-3xl md:text-4xl font-extrabold text-white mb-1">&lt;50ms</div>
+                    <div class="text-sm text-gray-400">Ultra-Low Response Latency</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-20">
+                <h2 class="text-blue-400 font-semibold tracking-wider uppercase text-sm mb-3">Next-Generation Capabilities</h2>
+                <h3 class="text-3xl md:text-5xl font-extrabold text-white tracking-tight mb-6">Engineered for Maximum Productivity</h3>
+                <p class="text-gray-400 text-base md:text-lg">Discover the advanced tools and neural architectures built to elevate your workflows, creativity, and coding speed.</p>
+            </div>
+
+            <!-- Grid of Features -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="glass-card p-8 rounded-2xl hover:border-blue-500/50 transition-all duration-300 group">
+                    <div class="w-14 h-14 rounded-xl bg-blue-600/20 text-blue-400 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-bolt-lightning"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-white mb-3">Lightning Fast Inference</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Optimized custom transformer models deliver near-instantaneous responses across text, code, and structured formats without compromising accuracy.
+                    </p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="glass-card p-8 rounded-2xl hover:border-purple-500/50 transition-all duration-300 group">
+                    <div class="w-14 h-14 rounded-xl bg-purple-600/20 text-purple-400 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-white mb-3">Enterprise-Grade Security</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        SOC2 Type II certified with end-to-end encryption. Your proprietary data is never used to train public models. Guaranteed privacy.
+                    </p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="glass-card p-8 rounded-2xl hover:border-pink-500/50 transition-all duration-300 group">
+                    <div class="w-14 h-14 rounded-xl bg-pink-600/20 text-pink-400 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-cubes"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-white mb-3">Multi-Modal Intelligence</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Seamlessly process and analyze text, high-resolution images, audio streams, and complex documents within a single unified prompt session.
+                    </p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="glass-card p-8 rounded-2xl hover:border-green-500/50 transition-all duration-300 group">
+                    <div class="w-14 h-14 rounded-xl bg-green-600/20 text-green-400 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-white mb-3">Advanced Code Synthesis</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Write production-ready code in Python, TypeScript, Rust, and Go with deep repository context and automated testing suggestions.
+                    </p>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="glass-card p-8 rounded-2xl hover:border-yellow-500/50 transition-all duration-300 group">
+                    <div class="w-14 h-14 rounded-xl bg-yellow-600/20 text-yellow-400 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-network-wired"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-white mb-3">Autonomous Agents</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Deploy intelligent multi-step agents capable of browsing the web, executing tasks, and integrating with external APIs autonomously.
+                    </p>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="glass-card p-8 rounded-2xl hover:border-cyan-500/50 transition-all duration-300 group">
+                    <div class="w-14 h-14 rounded-xl bg-cyan-600/20 text-cyan-400 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-sliders"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-white mb-3">Custom Fine-Tuning</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Easily fine-tune baseline foundation models on your proprietary datasets using our intuitive dashboard with zero infrastructure hassle.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive AI Playground Section -->
+    <section id="playground" class="py-24 relative bg-gray-900/40 border-y border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-blue-400 font-semibold tracking-wider uppercase text-sm mb-3">Live Experience</h2>
+                <h3 class="text-3xl md:text-5xl font-extrabold text-white tracking-tight mb-6">Test NovaAI Playground</h3>
+                <p class="text-gray-400 text-base md:text-lg">Switch between modes below and test our AI capabilities instantly right in your browser.</p>
+            </div>
+
+            <!-- Playground Container -->
+            <div class="max-w-4xl mx-auto glass-card rounded-2xl overflow-hidden border border-white/10 glow-effect">
+                <!-- Mode Tabs -->
+                <div class="flex border-b border-white/10 bg-black/40">
+                    <button onclick="switchTab('chat')" id="tab-chat" class="flex-1 py-4 px-6 text-sm font-bold text-white border-b-2 border-blue-500 bg-white/5 flex items-center justify-center gap-2 transition-all">
+                        <i class="fa-solid fa-comments text-blue-400"></i> AI Chat Assistant
+                    </button>
+                    <button onclick="switchTab('code')" id="tab-code" class="flex-1 py-4 px-6 text-sm font-medium text-gray-400 hover:text-white flex items-center justify-center gap-2 transition-all">
+                        <i class="fa-solid fa-code text-purple-400"></i> Code Generator
+                    </button>
+                    <button onclick="switchTab('image')" id="tab-image" class="flex-1 py-4 px-6 text-sm font-medium text-gray-400 hover:text-white flex items-center justify-center gap-2 transition-all">
+                        <i class="fa-solid fa-wand-magic-sparkles text-pink-400"></i> Image Concept
+                    </button>
+                </div>
+
+                <!-- Tab Content: Chat -->
+                <div id="content-chat" class="p-6">
+                    <div id="chat-messages" class="space-y-4 h-80 overflow-y-auto pr-2 mb-4">
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-lg gradient-bg text-white flex items-center justify-center text-xs shrink-0 font-bold">AI</div>
+                            <div class="glass-card p-4 rounded-xl text-sm text-gray-200 max-w-[80%]">
+                                Hello! I am NovaAI. Ask me anything or request a summary, idea, or brainstorming session.
+                            </div>
+                        </div>
+                    </div>
+                    <form onsubmit="handleChatSubmit(event)" class="flex gap-3">
+                        <input type="text" id="chat-input" placeholder="Type your prompt here..." class="flex-1 bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500 transition-colors">
+                        <button type="submit" class="gradient-bg text-white px-6 py-3 rounded-xl font-semibold text-sm hover:opacity-95 transition-all">
+                            Send
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Tab Content: Code Generator -->
+                <div id="content-code" class="p-6 hidden">
+                    <div class="space-y-4">
+                        <div class="flex gap-3">
+                            <select id="code-lang" class="bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500">
+                                <option value="python">Python</option>
+                                <option value="javascript">JavaScript (Node.js)</option>
+                                <option value="typescript">TypeScript</option>
+                                <option value="rust">Rust</option>
+                            </select>
+                            <input type="text" id="code-prompt" placeholder="e.g., Create a quicksort algorithm with comments" class="flex-1 bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500">
+                            <button onclick="generateCode()" class="gradient-bg text-white px-6 py-3 rounded-xl font-semibold text-sm hover:opacity-95 transition-all">Generate</button>
+                        </div>
+                        <div class="bg-black/80 rounded-xl p-4 font-mono text-xs text-blue-300 h-72 overflow-y-auto border border-white/5 relative">
+                            <div class="absolute top-3 right-3 text-gray-500 text-xs">Output Console</div>
+                            <pre id="code-output"># Select language & enter prompt to generate code snippet...</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content: Image Concept -->
+                <div id="content-image" class="p-6 hidden">
+                    <div class="space-y-4">
+                        <div class="flex gap-3">
+                            <input type="text" id="image-prompt" placeholder="e.g., Futuristic cyberpunk Tokyo street at night, neon reflections, 8k resolution" class="flex-1 bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500">
+                            <button onclick="generateImageConcept()" class="gradient-bg text-white px-6 py-3 rounded-xl font-semibold text-sm hover:opacity-95 transition-all">Visualize</button>
+                        </div>
+                        <div id="image-output-container" class="h-72 rounded-xl bg-black/60 border border-white/5 flex items-center justify-center text-center p-6 relative overflow-hidden">
+                            <div id="image-placeholder" class="text-gray-500 text-sm">
+                                <i class="fa-regular fa-image text-4xl mb-2 block text-gray-600"></i>
+                                Enter a description to generate high-fidelity AI concept rendering.
+                            </div>
+                            <div id="image-result" class="hidden absolute inset-0 bg-cover bg-center flex items-end p-6" style="background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop');">
+                                <span class="bg-black/70 backdrop-blur px-3 py-1.5 rounded-lg text-xs font-mono text-white">Generated via NovaVision v4 &bull; 8K HDR</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solutions / Use Cases Section -->
+    <section id="solutions" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-20">
+                <h2 class="text-blue-400 font-semibold tracking-wider uppercase text-sm mb-3">Tailored Use Cases</h2>
+                <h3 class="text-3xl md:text-5xl font-extrabold text-white tracking-tight mb-6">Built for Every Team & Industry</h3>
+                <p class="text-gray-400 text-base md:text-lg">See how leading organizations leverage NovaAI to accelerate growth and automate operations.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Solution 1 -->
+                <div class="glass-card p-8 rounded-2xl border border-white/10 flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center text-xl mb-6">
+                            <i class="fa-solid fa-laptop-code"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">Software Engineers</h4>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                            Accelerate development cycles with instant code refactoring, bug detection, automated unit tests, and architecture documentation.
+                        </p>
+                    </div>
+                    <ul class="space-y-2 text-sm text-gray-300 border-t border-white/10 pt-6">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-blue-400 text-xs"></i> IDE Extensions</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-blue-400 text-xs"></i> PR Review Bots</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-blue-400 text-xs"></i> Secure Codebase Indexing</li>
+                    </ul>
+                </div>
+
+                <!-- Solution 2 -->
+                <div class="glass-card p-8 rounded-2xl border border-white/10 flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-xl mb-6">
+                            <i class="fa-solid fa-pen-nib"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">Content Creators & Marketers</h4>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                            Produce high-converting ad copy, SEO articles, social media calendars, and localized multi-lingual campaigns in seconds.
+                        </p>
+                    </div>
+                    <ul class="space-y-2 text-sm text-gray-300 border-t border-white/10 pt-6">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-purple-400 text-xs"></i> Brand Voice Training</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-purple-400 text-xs"></i> SEO Optimization Suite</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-purple-400 text-xs"></i> Automated Social Scheduling</li>
+                    </ul>
+                </div>
+
+                <!-- Solution 3 -->
+                <div class="glass-card p-8 rounded-2xl border border-white/10 flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-pink-500/10 text-pink-400 flex items-center justify-center text-xl mb-6">
+                            <i class="fa-solid fa-chart-pie"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">Data Analysts & Finance</h4>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                            Upload complex CSVs, financial sheets, or quarterly reports and generate interactive executive dashboards and insights instantly.
+                        </p>
+                    </div>
+                    <ul class="space-y-2 text-sm text-gray-300 border-t border-white/10 pt-6">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-pink-400 text-xs"></i> Natural Language SQL</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-pink-400 text-xs"></i> Automated Report Generation</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-pink-400 text-xs"></i> Anomaly Detection</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-24 relative bg-gray-900/40 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-blue-400 font-semibold tracking-wider uppercase text-sm mb-3">Flexible Pricing</h2>
+                <h3 class="text-3xl md:text-5xl font-extrabold text-white tracking-tight mb-6">Simple Plans for Individuals & Teams</h3>
+                <p class="text-gray-400 text-base md:text-lg mb-8">Choose the plan that fits your needs. Scale or cancel anytime.</p>
+
+                <!-- Monthly / Yearly Toggle -->
+                <div class="inline-flex items-center p-1.5 glass-card rounded-xl border border-white/10">
+                    <button onclick="setBilling('monthly')" id="btn-monthly" class="px-5 py-2 rounded-lg text-sm font-semibold bg-blue-600 text-white transition-all">Monthly Billing</button>
+                    <button onclick="setBilling('yearly')" id="btn-yearly" class="px-5 py-2 rounded-lg text-sm font-semibold text-gray-400 hover:text-white transition-all">Yearly Billing <span class="text-xs text-green-400 font-bold ml-1">Save 20%</span></button>
+                </div>
+            </div>
+
+            <!-- Pricing Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- Free Plan -->
+                <div class="glass-card p-8 rounded-2xl border border-white/10 flex flex-col justify-between">
+                    <div>
+                        <div class="text-lg font-bold text-white mb-2">Starter</div>
+                        <p class="text-gray-400 text-sm mb-6">For hobbyists and curious learners exploring AI.</p>
+                        <div class="flex items-baseline gap-1 mb-8">
+                            <span class="text-4xl font-extrabold text-white" id="price-starter">$0</span>
+                            <span class="text-gray-400 text-sm">/month</span>
+                        </div>
+                        <ul class="space-y-4 text-sm text-gray-300 mb-8">
+                            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-blue-400"></i> 50,000 tokens / month</li>
+                            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-blue-400"></i> Standard Neural Models</li>
+                            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-blue-400"></i> Community Support</li>
+                            <li class="flex items-center gap-3 text-gray-500"><i class="fa-solid fa-xmark"></i> Custom Fine-Tuning</li>
+                        </ul>
+                    </div>
+                    <button onclick="openModal('signup')" class="w-full py-3 rounded-xl border border-white/20 text-white font-semibold text-sm hover:bg-white/10 transition-all">Get Started Free</button>
+                </div>
+
+                <!-- Pro Plan (Featured) -->
+                <div class="glass-card p-8 rounded-2xl border-2 border-blue-500 relative flex flex-col justify-between glow-effect">
+                    <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 gradient-bg text-white text-xs font-bold rounded-full uppercase tracking-wider shadow-lg">Most Popular</div>
+                    <div>
+                        <div class="text-lg font-bold text-white mb-2">Pro Developer</div>
+                        <p class="text-gray-400 text-sm mb-6">For power users, creators, and professional developers.</p>
+                        <div class="flex items-baseline gap-1 mb-8">
+                            <span class="text-4xl font-extrabold text-white" id="price-pro">$29</span>
+                            <span class="text-gray-400 text-sm">/month</span>
+                        </div>
+                        <ul class="space-y-4 text-sm text-gray-300 mb-8">
+                            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-blue-400"></i> Unlimited Standard Tokens</li>
+                            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-blue-400"></i> Access to Nova v4.0 Ultra</li>
+                            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-blue-400"></i> Priority API Speed (&lt;30ms)</li>
+                            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-blue-400"></i> 24/7 Priority Support</li>
+                        </ul>
+                    </div>
+                    <button onclick="openModal('signup')" class="w-full py-3 rounded-xl gradient-bg text-white font-semibold text-sm shadow-lg shadow-blue-600/30 hover:opacity-95 transition-all">Start 14-Day Free Trial</button>
+                </div>
+
+                <!-- Enterprise Plan -->
+                <div class="glass-card p-8 rounded-2xl border border-white/10 flex flex-col justify-between">
+                    <div>
+                        <div class="text-lg font-bold text-white mb-2">Enterprise</div>
+                        <p class="text-gray-400 text-sm mb-6">For organizations requiring robust security & custom solutions.</p>
+                        <div class="flex items-baseline gap-1 mb-8">
+                            <span class="text-4xl font-extrabold text-white" id="price-enterprise">$199</span>
+                            <span class="text-gray-400 text-sm">/month</span>
+                        </div>
+                        <ul class="space-y-4 text-sm text-gray-300 mb-8">
+                            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-blue-400"></i> Dedicated Neural Instances</li>
+                            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-blue-400"></i> Custom Model Fine-Tuning</li>
+                            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-blue-400"></i> SOC2 Type II & GDPR Compliance</li>
+                            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-blue-400"></i> Dedicated Account Manager</li>
+                        </ul>
+                    </div>
+                    <button onclick="openModal('signup')" class="w-full py-3 rounded-xl border border-white/20 text-white font-semibold text-sm hover:bg-white/10 transition-all">Contact Sales</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-20">
+                <h2 class="text-blue-400 font-semibold tracking-wider uppercase text-sm mb-3">Testimonials</h2>
+                <h3 class="text-3xl md:text-5xl font-extrabold text-white tracking-tight mb-6">Loved by Innovators Worldwide</h3>
+                <p class="text-gray-400 text-base md:text-lg">Hear what industry leaders have to say about building with NovaAI.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="glass-card p-8 rounded-2xl border border-white/10 flex flex-col justify-between">
+                    <p class="text-gray-300 text-sm leading-relaxed mb-6">
+                        "NovaAI has completely revolutionized how our engineering team writes and reviews code. Velocity is up by 35% and bug rates have plummeted."
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-sm">JS</div>
+                        <div>
+                            <div class="text-sm font-bold text-white">Julian Sterling</div>
+                    <div class="text-xs text-gray-400">CTO at TechFlow Labs</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="glass-card p-8 rounded-2xl border border-white/10 flex flex-col justify-between">
+                    <p class="text-gray-300 text-sm leading-relaxed mb-6">
+                        "The multi-modal intelligence is astounding. Being able to upload complex architectural diagrams and get instant production code is a game changer."
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-sm">AM</div>
+                        <div>
+                            <div class="text-sm font-bold text-white">Aaliyah Morales</div>
+                            <div class="text-xs text-gray-400">Lead AI Researcher, Nexa Corp</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="glass-card p-8 rounded-2xl border border-white/10 flex flex-col justify-between">
+                    <p class="text-gray-300 text-sm leading-relaxed mb-6">
+                        "Unmatched speed and enterprise security. We evaluated five different AI platforms, and NovaAI was the only one that met all our rigorous compliance standards."
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-pink-500/20 text-pink-400 flex items-center justify-center font-bold text-sm">DK</div>
+                        <div>
+                            <div class="text-sm font-bold text-white">David Kincaid</div>
+                            <div class="text-xs text-gray-400">VP of Engineering, Apex Systems</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-24 relative bg-gray-900/40 border-t border-white/5">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-blue-400 font-semibold tracking-wider uppercase text-sm mb-3">FAQ</h2>
+                <h3 class="text-3xl md:text-4xl font-extrabold text-white tracking-tight">Frequently Asked Questions</h3>
+            </div>
+
+            <div class="space-y-4">
+                <!-- FAQ Item 1 -->
+                <div class="glass-card rounded-xl border border-white/10 overflow-hidden">
+                    <button onclick="toggleFaq(1)" class="w-full p-6 text-left font-semibold text-white flex justify-between items-center focus:outline-none">
+                        <span>How is NovaAI different from other AI platforms?</span>
+                        <i id="faq-icon-1" class="fa-solid fa-plus text-gray-400 transition-transform"></i>
+                    </button>
+                    <div id="faq-content-1" class="hidden px-6 pb-6 text-sm text-gray-400 leading-relaxed border-t border-white/5 pt-4">
+                        NovaAI combines ultra-low inference latency (&lt;50ms), multi-modal capabilities, and enterprise-grade privacy in a unified platform. Our custom transformer architectures are finely tuned for both high creativity and rigorous code accuracy.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 2 -->
+                <div class="glass-card rounded-xl border border-white/10 overflow-hidden">
+                    <button onclick="toggleFaq(2)" class="w-full p-6 text-left font-semibold text-white flex justify-between items-center focus:outline-none">
+                        <span>Is my data used to train public models?</span>
+                        <i id="faq-icon-2" class="fa-solid fa-plus text-gray-400 transition-transform"></i>
+                    </button>
+                    <div id="faq-content-2" class="hidden px-6 pb-6 text-sm text-gray-400 leading-relaxed border-t border-white/5 pt-4">
+                        Never. We adhere to strict data privacy guarantees. Your proprietary prompts, codebase, and uploaded documents are encrypted and never used for public model training.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div class="glass-card rounded-xl border border-white/10 overflow-hidden">
+                    <button onclick="toggleFaq(3)" class="w-full p-6 text-left font-semibold text-white flex justify-between items-center focus:outline-none">
+                        <span>Can I cancel or change my subscription anytime?</span>
+                        <i id="faq-icon-3" class="fa-solid fa-plus text-gray-400 transition-transform"></i>
+                    </button>
+                    <div id="faq-content-3" class="hidden px-6 pb-6 text-sm text-gray-400 leading-relaxed border-t border-white/5 pt-4">
+                        Yes, you can upgrade, downgrade, or cancel your subscription instantly from your account billing dashboard with no hidden penalties or fees.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Banner -->
+    <section class="py-24 relative overflow-hidden">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="glass-card p-10 md:p-16 rounded-3xl border border-white/20 glow-effect text-center relative overflow-hidden">
+                <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-blue-600/30 rounded-full blur-3xl pointer-events-none"></div>
+                <h3 class="text-3xl md:text-5xl font-extrabold text-white tracking-tight mb-6">Ready to Transform Your Workflow?</h3>
+                <p class="text-gray-300 text-base md:text-lg max-w-2xl mx-auto mb-10">Join over 150,000 developers, creators, and enterprises building the future with NovaAI.</p>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <button onclick="openModal('signup')" class="w-full sm:w-auto gradient-bg text-white font-semibold px-8 py-4 rounded-xl shadow-xl shadow-blue-600/30 hover:opacity-95 transition-all text-base">Get Started For Free</button>
+                    <a href="#playground" class="w-full sm:w-auto glass-card text-white font-semibold px-8 py-4 rounded-xl hover:bg-white/10 transition-all border border-white/10 text-base">Explore Playground</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 bg-black/60 pt-16 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
+                <div class="col-span-2">
+                    <a href="#" class="flex items-center gap-3 mb-4">
+                        <div class="w-8 h-8 rounded-lg gradient-bg flex items-center justify-center text-white font-bold">
+                            <i class="fa-solid fa-brain text-sm"></i>
+                        </div>
+                        <span class="text-xl font-extrabold text-white">Nova<span class="gradient-text">AI</span></span>
+                    </a>
+                    <p class="text-gray-400 text-sm max-w-xs mb-6">Empowering developers and enterprises with next-generation artificial intelligence and autonomous neural agents.</p>
+                    <div class="flex items-center gap-4 text-gray-400 text-lg">
+                        <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-github"></i></a>
+                        <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-discord"></i></a>
+                        <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h5 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Product</h5>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li><a href="#features" class="hover:text-white transition-colors">Features</a></li>
+                        <li><a href="#playground" class="hover:text-white transition-colors">Playground</a></li>
+                        <li><a href="#solutions" class="hover:text-white transition-colors">Solutions</a></li>
+                        <li><a href="#pricing" class="hover:text-white transition-colors">Pricing</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Resources</h5>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Documentation</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">API Reference</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Guides & Tutorials</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Status Dashboard</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Company</h5>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Careers <span class="text-xs bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded ml-1">We're hiring</span></a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between text-xs text-gray-500">
+                <p>&copy; 2026 NovaAI Technologies Inc. All rights reserved.</p>
+                <div class="flex items-center gap-6 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-gray-400 transition-colors">Privacy</a>
+                    <a href="#" class="hover:text-gray-400 transition-colors">Terms</a>
+                    <a href="#" class="hover:text-gray-400 transition-colors">Security</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Chatbot Widget -->
+    <div class="fixed bottom-6 right-6 z-50">
+        <!-- Chat Toggle Button -->
+        <button id="chat-widget-btn" onclick="toggleChatWidget()" class="w-14 h-14 rounded-full gradient-bg text-white shadow-2xl flex items-center justify-center text-xl hover:scale-110 transition-transform">
+            <i class="fa-solid fa-comment-dots"></i>
+        </button>
+
+        <!-- Chat Popup Box -->
+        <div id="chat-widget-box" class="hidden absolute bottom-20 right-0 w-80 sm:w-96 glass-card rounded-2xl border border-white/10 shadow-2xl overflow-hidden flex flex-col">
+            <div class="p-4 bg-black/60 border-b border-white/10 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg gradient-bg flex items-center justify-center text-white text-xs font-bold">
+                        <i class="fa-solid fa-brain"></i>
+                    </div>
+                    <div>
+                        <div class="text-sm font-bold text-white">NovaAI Assistant</div>
+                        <div class="text-xs text-green-400 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-green-400"></span> Online</div>
+                    </div>
+                </div>
+                <button onclick="toggleChatWidget()" class="text-gray-400 hover:text-white text-sm"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="widget-messages" class="p-4 space-y-3 h-72 overflow-y-auto text-xs">
+                <div class="flex items-start gap-2">
+                    <div class="w-6 h-6 rounded bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold shrink-0">AI</div>
+                    <div class="bg-white/5 p-3 rounded-xl text-gray-200">Hi there! Have any questions about NovaAI? Ask me anytime!</div>
+                </div>
+            </div>
+            <form onsubmit="handleWidgetSubmit(event)" class="p-3 border-t border-white/10 bg-black/40 flex gap-2">
+                <input type="text" id="widget-input" placeholder="Ask a question..." class="flex-1 bg-black/60 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500">
+                <button type="submit" class="gradient-bg text-white px-4 py-2 rounded-lg font-semibold text-xs">Send</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Auth Modal (Sign In / Sign Up) -->
+    <div id="auth-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-md p-4">
+        <div class="glass-card p-8 rounded-2xl max-w-md w-full border border-white/20 relative glow-effect">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
+            
+            <div id="modal-title" class="text-2xl font-extrabold text-white mb-2">Welcome Back</div>
+            <p id="modal-subtitle" class="text-sm text-gray-400 mb-6">Sign in to your NovaAI developer account.</p>
+
+            <form onsubmit="handleAuthSubmit(event)" class="space-y-4">
+                <div id="name-field" class="hidden">
+                    <label class="block text-xs font-semibold text-gray-300 uppercase mb-1">Full Name</label>
+                    <input type="text" placeholder="John Doe" class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 uppercase mb-1">Email Address</label>
+                    <input type="email" required placeholder="john@example.com" class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 uppercase mb-1">Password</label>
+                    <input type="password" required placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500">
+                </div>
+                <button type="submit" id="modal-submit-btn" class="w-full py-3.5 rounded-xl gradient-bg text-white font-semibold text-sm shadow-lg shadow-blue-600/30 hover:opacity-95 transition-all">Sign In</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript Interactions -->
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Playground Tabs
+        function switchTab(tab) {
+            ['chat', 'code', 'image'].forEach(t => {
+                document.getElementById(`content-${t}`).classList.add('hidden');
+                document.getElementById(`tab-${t}`).classList.remove('border-b-2', 'border-blue-500', 'bg-white/5', 'text-white');
+                document.getElementById(`tab-${t}`).classList.add('text-gray-400');
+            });
+            document.getElementById(`content-${tab}`).classList.remove('hidden');
+            document.getElementById(`tab-${tab}`).classList.add('border-b-2', 'border-blue-500', 'bg-white/5', 'text-white');
+            document.getElementById(`tab-${tab}`).classList.remove('text-gray-400');
+        }
+
+        // Chat Playground Simulation
+        function handleChatSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('chat-input');
+            const container = document.getElementById('chat-messages');
+            if(!input.value.trim()) return;
+
+            // User message
+            container.innerHTML += `
+                <div class="flex items-start gap-3 justify-end">
+                    <div class="bg-blue-600/30 border border-blue-500/30 p-4 rounded-xl text-sm text-white max-w-[80%]">${input.value}</div>
+                    <div class="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs shrink-0 font-bold">U</div>
+                </div>
+            `;
+            const userQuery = input.value;
+            input.value = '';
+            container.scrollTop = container.scrollHeight;
+
+            // Simulated AI Response
+            setTimeout(() => {
+                container.innerHTML += `
+                    <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-lg gradient-bg text-white flex items-center justify-center text-xs shrink-0 font-bold">AI</div>
+                        <div class="glass-card p-4 rounded-xl text-sm text-gray-200 max-w-[80%]">
+                            Analyzing prompt: "<em>${userQuery}</em>". NovaAI neural network generated optimal response: Everything is operating at peak performance with zero latency. How else can I assist your engineering pipeline today?
+                        </div>
+                    </div>
+                `;
+                container.scrollTop = container.scrollHeight;
+            }, 600);
+        }
+
+        // Code Generator Simulation
+        function generateCode() {
+            const lang = document.getElementById('code-lang').value;
+            const prompt = document.getElementById('code-prompt').value || 'Default function';
+            const output = document.getElementById('code-output');
+            
+            output.innerText = `// Generating ${lang.toUpperCase()} code for: "${prompt}"...\n\n`;
+            let sampleCode = '';
+            if(lang === 'python') {
+                sampleCode = `def ${prompt.toLowerCase().replace(/[^a-z0-9]/g, '_')}(data_stream):\n    """NovaAI synthesized Python module."""\n    import time\n    start_time = time.time()\n    processed = [x * 2 for x in data_stream if x > 0]\n    print(f"Executed in {time.time() - start_time:.4f}s")\n    return processed`;
+            } else if(lang === 'javascript') {
+                sampleCode = `async function ${prompt.toLowerCase().replace(/[^a-z0-9]/g, '_')}(payload) {\n    // NovaAI Node.js asynchronous handler\n    console.log("Processing payload...", payload);\n    const result = await fetch('https://api.novaai.internal/v4/compute', {\n        method: 'POST',\n        body: JSON.stringify(payload)\n    });\n    return await result.json();\n}`;
+            } else {
+                sampleCode = `// TypeScript / Rust synthesized template\npub fn execute_neural_task(input: &str) -> Result<String, Box<dyn std::error::Error>> {\n    println!("Running NovaAI Rust kernel for: {}", input);\n    Ok("Success".to_string())\n}`;
+            }
+
+            let i = 0;
+            const interval = setInterval(() => {
+                output.innerText += sampleCode.charAt(i);
+                i++;
+                if(i >= sampleCode.length) clearInterval(interval);
+            }, 10);
+        }
+
+        // Image Concept Simulation
+        function generateImageConcept() {
+            const placeholder = document.getElementById('image-placeholder');
+            const result = document.getElementById('image-result');
+            placeholder.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-3xl mb-2 text-blue-400 block"></i> Synthesizing neural concept pixels...`;
+            setTimeout(() => {
+                placeholder.innerHTML = '';
+                result.classList.remove('hidden');
+            }, 1200);
+        }
+
+        // Pricing Billing Toggle
+        function setBilling(type) {
+            const btnM = document.getElementById('btn-monthly');
+            const btnY = document.getElementById('btn-yearly');
+            const pStarter = document.getElementById('price-starter');
+            const pPro = document.getElementById('price-pro');
+            const pEnt = document.getElementById('price-enterprise');
+
+            if(type === 'monthly') {
+                btnM.className = "px-5 py-2 rounded-lg text-sm font-semibold bg-blue-600 text-white transition-all";
+                btnY.className = "px-5 py-2 rounded-lg text-sm font-semibold text-gray-400 hover:text-white transition-all";
+                pStarter.innerText = "$0";
+                pPro.innerText = "$29";
+                pEnt.innerText = "$199";
+            } else {
+                btnY.className = "px-5 py-2 rounded-lg text-sm font-semibold bg-blue-600 text-white transition-all";
+                btnM.className = "px-5 py-2 rounded-lg text-sm font-semibold text-gray-400 hover:text-white transition-all";
+                pStarter.innerText = "$0";
+                pPro.innerText = "$23";
+                pEnt.innerText = "$159";
+            }
+        }
+
+        // FAQ Accordion Toggle
+        function toggleFaq(id) {
+            const content = document.getElementById(`faq-content-${id}`);
+            const icon = document.getElementById(`faq-icon-${id}`);
+            content.classList.toggle('hidden');
+            icon.classList.toggle('rotate-45');
+        }
+
+        // Floating Chatbot Widget Toggle
+        function toggleChatWidget() {
+            const box = document.getElementById('chat-widget-box');
+            box.classList.toggle('hidden');
+        }
+
+        function handleWidgetSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('widget-input');
+            const container = document.getElementById('widget-messages');
+            if(!input.value.trim()) return;
+
+            container.innerHTML += `
+                <div class="flex items-start gap-2 justify-end">
+                    <div class="bg-blue-600/30 border border-blue-500/30 p-2.5 rounded-lg text-white">${input.value}</div>
+                </div>
+            `;
+            const q = input.value;
+            input.value = '';
+            container.scrollTop = container.scrollHeight;
+
+            setTimeout(() => {
+                container.innerHTML += `
+                    <div class="flex items-start gap-2">
+                        <div class="w-6 h-6 rounded bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold shrink-0">AI</div>
+                        <div class="bg-white/5 p-2.5 rounded-lg text-gray-200">Thanks for asking about "${q}". Our team can help you set this up instantly! Feel free to start a free trial.</div>
+                    </div>
+                `;
+                container.scrollTop = container.scrollHeight;
+            }, 600);
+        }
+
+        // Auth Modal Control
+        function openModal(type) {
+            const modal = document.getElementById('auth-modal');
+            const title = document.getElementById('modal-title');
+            const subtitle = document.getElementById('modal-subtitle');
+            const nameField = document.getElementById('name-field');
+            const submitBtn = document.getElementById('modal-submit-btn');
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+
+            if(type === 'signup') {
+                title.innerText = "Create Your Account";
+                subtitle.innerText = "Get started with NovaAI free trial today.";
+                nameField.classList.remove('hidden');
+                submitBtn.innerText = "Create Account";
+            } else {
+                title.innerText = "Welcome Back";
+                subtitle.innerText = "Sign in to your NovaAI developer account.";
+                nameField.classList.add('hidden');
+                submitBtn.innerText = "Sign In";
+            }
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('auth-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function handleAuthSubmit(e) {
+            e.preventDefault();
+            alert('Authentication simulation successful! Redirecting to workspace...');
+            closeModal();
+        }
+    </script>
+</body>
+</html>
